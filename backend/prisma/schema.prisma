@@ -13,7 +13,8 @@ model Department {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users     User[]
+  users      User[]
+  employees  Employee[]
 
   @@map("departments")
 }
@@ -31,6 +32,26 @@ model User {
   updatedAt    DateTime @updatedAt
 
   @@map("users")
+}
+
+model Employee {
+  id                 Int      @id @default(autoincrement())
+  name               String
+  identification     String   @unique
+  identificationType String
+  position           String
+  email              String   @unique
+  licenseType        String
+  licenseExpiry      DateTime
+  licensePhotoFront  String?
+  licensePhotoBack   String?
+  isBlocked          Boolean  @default(false)
+  departmentId       Int
+  department         Department @relation(fields: [departmentId], references: [id])
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("employees")
 }
 
 enum Role {

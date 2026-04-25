@@ -4,14 +4,24 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Crear departamento de Transporte
-  const transportDept = await prisma.department.upsert({
-    where: { name: "Transporte" },
-    update: {},
-    create: { name: "Transporte" },
-  });
+  // Crear departamentos
+  const departments = [
+    "Transporte",
+    "Administrativo",
+    "Obras Públicas",
+    "Financiero",
+    "Recursos Humanos",
+  ];
 
-  console.log("Departamento creado:", transportDept.name);
+  for (const name of departments) {
+    await prisma.department.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
+  }
+
+  console.log("Departamentos creados:", departments.join(", "));
 
   // Crear SuperAdmin
   const hashedPassword = await bcrypt.hash("admin123", 10);
@@ -24,13 +34,11 @@ async function main() {
       password: hashedPassword,
       name: "Administrador del Sistema",
       role: "SUPER_ADMIN",
-      departmentId: transportDept.id,
+      departmentId: 1,
     },
   });
 
-  console.log("SuperAdmin creado:", superAdmin.email);
-  console.log("Contraseña temporal: admin123");
-  console.log("¡Cambiá esta contraseña después del primer login!");
+  console.log("SuperAdmin:", superAdmin.email);
 }
 
 main()

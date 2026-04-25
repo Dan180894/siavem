@@ -4,7 +4,18 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = "siavem_secret_key_2026";
 
+/**
+ * Tests unitarios para el módulo de Autenticación
+ * Valida: encriptación de contraseñas con bcryptjs,
+ * generación y verificación de tokens JWT,
+ * y validación de roles del sistema
+ */
 describe("Autenticación - Funciones", () => {
+  /**
+   * Encriptación de contraseñas con bcryptjs
+   * Las contraseñas nunca se guardan en texto plano
+   * Se usa hash con salt de 10 rondas
+   */
   describe("Encriptación de contraseña", () => {
     it("debería encriptar una contraseña correctamente", async () => {
       const password = "admin123";
@@ -31,6 +42,12 @@ describe("Autenticación - Funciones", () => {
     });
   });
 
+  /**
+   * Generación y verificación de JWT (JSON Web Tokens)
+   * El token contiene: id, email, rol y departamento del usuario
+   * Expira en 8 horas por seguridad
+   * Formato válido: header.payload.signature (3 partes separadas por punto)
+   */
   describe("Generación de JWT", () => {
     it("debería generar un token válido", () => {
       const payload = {
@@ -80,6 +97,12 @@ describe("Autenticación - Funciones", () => {
     });
   });
 
+  /**
+   * Validación de roles para registro de usuarios
+   * Solo SUPER_ADMIN, ADMIN_TRANSPORT y ADMIN_DEPARTMENT
+   * pueden registrar nuevos usuarios
+   * EMPLOYEE no tiene permisos de registro
+   */
   describe("Validación de roles", () => {
     it("debería validar rol SUPER_ADMIN", () => {
       const allowedRoles = ["SUPER_ADMIN", "ADMIN_TRANSPORT"];
