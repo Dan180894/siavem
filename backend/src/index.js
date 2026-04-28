@@ -3,7 +3,8 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
-import vehicleRoutes from "./routes/vehicles.js";
+import vehicleRoutes from "./routes/vehiclesRoute.js";
+import workshopRoutes from "./routes/workshopRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/vehicles", vehicleRoutes);
+app.use("/api/workshops", workshopRoutes);
 
 // Ruta de prueba
 app.get("/api/health", (req, res) => {

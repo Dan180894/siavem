@@ -90,3 +90,18 @@ enum VehicleStatus {
   MAINTENANCE
   INACTIVE
 }
+
+model Workshop {
+  id                  Int            @id @default(autoincrement())
+  contractCode        String         @unique
+  name                String
+  address             String
+  specialty           String
+  contractExpiry      DateTime
+  licitationDocument  String?
+  isBlocked           Boolean        @default(false)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@map("workshops")
+}
