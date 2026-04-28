@@ -60,3 +60,33 @@ enum Role {
   ADMIN_DEPARTMENT
   EMPLOYEE
 }
+
+model Vehicle {
+  id           Int           @id @default(autoincrement())
+  plate        String        @unique
+  brand        String
+  model        String
+  year         Int
+  color        String
+  fuel         FuelType
+  mileage      Int           @default(0)
+  status       VehicleStatus @default(ACTIVE)
+  observations String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("vehicles")
+}
+
+enum FuelType {
+  GASOLINE
+  DIESEL
+  ELECTRIC
+  HYBRID
+}
+
+enum VehicleStatus {
+  ACTIVE
+  MAINTENANCE
+  INACTIVE
+}
