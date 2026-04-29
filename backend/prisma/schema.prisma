@@ -17,6 +17,8 @@ model Department {
   employees  Employee[]
 
   @@map("departments")
+
+  tripRequests  TripRequest[]
 }
 
 model User {
@@ -32,6 +34,8 @@ model User {
   updatedAt    DateTime @updatedAt
 
   @@map("users")
+
+  tripRequests  TripRequest[]
 }
 
 model Employee {
@@ -52,6 +56,8 @@ model Employee {
   updatedAt          DateTime @updatedAt
 
   @@map("employees")
+
+  tripRequests  TripRequest[]
 }
 
 enum Role {
@@ -76,6 +82,8 @@ model Vehicle {
   updatedAt    DateTime      @updatedAt
 
   @@map("vehicles")
+
+  tripRequests  TripRequest[]
 }
 
 enum FuelType {
@@ -104,4 +112,40 @@ model Workshop {
   updatedAt           DateTime       @updatedAt
 
   @@map("workshops")
+}
+
+
+model TripRequest {
+  id            Int             @id @default(autoincrement())
+  departmentId  Int
+  department    Department      @relation(fields: [departmentId], references: [id])
+  requestedById Int
+  requestedBy   User            @relation(fields: [requestedById], references: [id])
+  driverId      Int
+  driver        Employee        @relation(fields: [driverId], references: [id])
+  vehicleId     Int?
+  vehicle       Vehicle?        @relation(fields: [vehicleId], references: [id])
+  objective     String
+  vehicleType   VehicleType
+  destination   String
+  departureAt   DateTime
+  returnAt      DateTime
+  status        TripStatus      @default(PENDING)
+  observations  String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@map("trip_requests")
+}
+
+enum VehicleType {
+  VEHICLE
+  MOTORCYCLE
+  BUS
+}
+
+enum TripStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
