@@ -84,6 +84,8 @@ model Vehicle {
   @@map("vehicles")
 
   tripRequests  TripRequest[]
+  inspections   Inspection[]
+  maintenances  Maintenance[]
 }
 
 enum FuelType {
@@ -112,6 +114,8 @@ model Workshop {
   updatedAt           DateTime       @updatedAt
 
   @@map("workshops")
+
+  maintenances  Maintenance[]
 }
 
 
@@ -136,6 +140,8 @@ model TripRequest {
   updatedAt     DateTime        @updatedAt
 
   @@map("trip_requests")
+
+  inspections  Inspection[]
 }
 
 enum VehicleType {
@@ -148,4 +154,64 @@ enum TripStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+model Inspection {
+  id              Int            @id @default(autoincrement())
+  tripRequestId   Int
+  tripRequest     TripRequest    @relation(fields: [tripRequestId], references: [id])
+  vehicleId       Int
+  vehicle         Vehicle        @relation(fields: [vehicleId], references: [id])
+  type            InspectionType
+  date            DateTime       @default(now())
+  mileage         Int
+  fuelLevel       FuelLevel
+  observations    String?
+  mechanicName    String
+  mechanicSign    String
+  driverSign      String
+  items           Json
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@map("inspections")
+}
+
+model Maintenance {
+  id              Int               @id @default(autoincrement())
+  vehicleId       Int
+  vehicle         Vehicle           @relation(fields: [vehicleId], references: [id])
+  workshopId      Int
+  workshop        Workshop          @relation(fields: [workshopId], references: [id])
+  type            MaintenanceType
+  maintenanceDate DateTime
+  description     String
+  mileage         Int
+  nextServiceKm   Int?
+  amount          Float
+  departureDate   DateTime
+  returnDate      DateTime?
+  problemDetail   String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@map("maintenances")
+}
+
+enum InspectionType {
+  DEPARTURE
+  RETURN
+}
+
+enum FuelLevel {
+  FULL
+  THREE_QUARTERS
+  HALF
+  ONE_QUARTER
+  EMPTY
+}
+
+enum MaintenanceType {
+  PREVENTIVE
+  CORRECTIVE
 }

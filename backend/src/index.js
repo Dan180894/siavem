@@ -6,6 +6,8 @@ import employeeRoutes from "./routes/employeeRoutes.js";
 import vehicleRoutes from "./routes/vehiclesRoute.js";
 import workshopRoutes from "./routes/workshopRoutes.js";
 import tripRequestRoutes from "./routes/tripRequestRoutes.js";
+import maintenanceRoutes from "./routes/maintenanceRoutes.js";
+import inspectionRoutes from "./routes/inspectionRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +22,8 @@ app.use("/api/employees", employeeRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/workshops", workshopRoutes);
 app.use("/api/trip-requests", tripRequestRoutes);
+app.use("/api/maintenances", maintenanceRoutes);
+app.use("/api/inspections", inspectionRoutes);
 
 // Ruta de prueba
 app.get("/api/health", (req, res) => {
